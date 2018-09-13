@@ -13,6 +13,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<version.roaster>2.20.1.Final</version.roaster>
 	</properties>
 
 	<dependencies>
@@ -20,6 +21,16 @@
 			<groupId>com.codeinchinese</groupId>
 			<artifactId>english-chinese-dictionary</artifactId>
 			<version>0.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.forge.roaster</groupId>
+			<artifactId>roaster-api</artifactId>
+			<version>${version.roaster}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.forge.roaster</groupId>
+			<artifactId>roaster-jdt</artifactId>
+			<version>${version.roaster}</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
