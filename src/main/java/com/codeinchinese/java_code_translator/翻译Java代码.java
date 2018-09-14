@@ -17,7 +17,13 @@ public class 翻译Java代码 {
 
     // 汉化类名
     分析结果.setName(查词(分析结果.getName()));
-
+    /*
+    List<FieldSource<JavaClassSource>> 域 = 分析结果.getFields();
+    for (FieldSource<JavaClassSource> 某域 : 域) {
+        String 域名 = 某域.getName();
+        某域.setName(查词((域名));
+    }*/
+    
     // 汉化Bean属性名, 以及属性的类型名
     for (PropertySource<JavaClassSource> 某属性 : 分析结果.getProperties()) {
       String 属性名 = 某属性.getName();

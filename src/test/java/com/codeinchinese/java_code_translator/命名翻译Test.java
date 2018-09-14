@@ -19,10 +19,14 @@ public class 命名翻译Test {
   @Test
   public void 翻译命名() {
     assertEquals("我的类别", 命名翻译.翻译命名("MyClass"));
+
+    // 不需翻译字段
     assertEquals("for类别", 命名翻译.翻译命名("forClass"));
+
+    // 单字符分段
     assertEquals("M类别", 命名翻译.翻译命名("MClass"));
   }
-  
+
   @Test
   public void 消除括号内容() {
     assertEquals("M类别", 命名翻译.消除括号内容("M类别"));

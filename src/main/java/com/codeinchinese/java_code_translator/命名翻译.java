@@ -32,15 +32,16 @@ public class 命名翻译 {
     for (String 拆分 : 命名拆分) {
       中文命名 += 拆分.equals("_") ? "_" : 首选释义(拆分);
     }
-    
+
     // 过滤所有特殊字符
-    中文命名 = 中文命名.replaceAll("[\\-\\+\\.\\^:,<>]","");
+    中文命名 = 中文命名.replaceAll("[\\-\\+\\.\\^:,<>]", "");
     System.out.println(" -> " + 中文命名);
     return 中文命名;
   }
 
   /**
    * 如找不到释义, 返回原词
+   * 
    * @param 英文
    * @return
    */
@@ -64,16 +65,16 @@ public class 命名翻译 {
     }
 
     // TODO: 预处理, 获取原型, 比如downloads->download, has->have等
-    
+
     List<String> 中文词义 = 详细.中文释义;
     if (中文词义.size() == 0) {
       return 英文;
     }
-    
+
     // TODO: 分段0为词性 n. 等等. 需enum
     String 首选词义 = 英文;
     Map<String, List<String>> 词性到释义 = 分词性(详细);
-    
+
     if (词性到释义.containsKey(词性_计算机)) {
       首选词义 = 词性到释义.get(词性_计算机).get(0);
     } else {
@@ -82,8 +83,7 @@ public class 命名翻译 {
       String[] 分段 = 首批词义.split(" ");
       if (分段.length == 1) {
         首选词义 = 分段[0];
-      }
-      else {
+      } else {
         首选词义 = 分段[1];
       }
     }
