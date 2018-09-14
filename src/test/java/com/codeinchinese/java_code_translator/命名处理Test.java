@@ -10,15 +10,15 @@ public class 命名处理Test {
 
   @Test
   public void 拆分Java命名() {
-    assertEquals(命名处理.拆分Java命名("class"), Arrays.asList("class"));
-    assertEquals(命名处理.拆分Java命名("myClass"), Arrays.asList("my", "Class"));
-    assertEquals(命名处理.拆分Java命名("MyClass"), Arrays.asList("My", "Class"));
-    assertEquals(命名处理.拆分Java命名("ABCName"), Arrays.asList("ABC", "Name"));
-    assertEquals(命名处理.拆分Java命名("getABCName"), Arrays.asList("get", "ABC", "Name"));
-    assertEquals(命名处理.拆分Java命名("getUOMPrecision"), Arrays.asList("get", "UOM", "Precision"));
-    assertEquals(命名处理.拆分Java命名("MyProduct_bought"), Arrays.asList("My", "Product", "_", "bought"));
-    assertEquals(命名处理.拆分Java命名("Product_"), Arrays.asList("Product", "_"));
-    assertEquals(命名处理.拆分Java命名("_Product"), Arrays.asList("_", "Product"));
+    assertEquals(Arrays.asList("class"), 命名处理.拆分Java命名("class"));
+    assertEquals(Arrays.asList("my", "Class"), 命名处理.拆分Java命名("myClass"));
+    assertEquals(Arrays.asList("My", "Class"), 命名处理.拆分Java命名("MyClass"));
+    assertEquals(Arrays.asList("ABC", "Name"), 命名处理.拆分Java命名("ABCName"));
+    assertEquals(Arrays.asList("get", "ABC", "Name"), 命名处理.拆分Java命名("getABCName"));
+    assertEquals(Arrays.asList("get", "UOM", "Precision"), 命名处理.拆分Java命名("getUOMPrecision"));
+    assertEquals(Arrays.asList("My", "Product", "_", "bought"), 命名处理.拆分Java命名("MyProduct_bought"));
+    assertEquals(Arrays.asList("Product", "_"), 命名处理.拆分Java命名("Product_"));
+    assertEquals(Arrays.asList("_", "Product"), 命名处理.拆分Java命名("_Product"));
   }
 
 }

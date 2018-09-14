@@ -17,10 +17,12 @@ public class 命名翻译 {
   private static final String 词性_名词 = "n.";
   private static final Set<String> 不需翻译的词汇 = new HashSet<>(Arrays.asList("to", "for", "of"));
 
-  private static final Map<String, String> 字典 = new HashMap<>();
+  private static final Map<String, String> 术语词典 = new HashMap<>();
   static {
-    字典.put("get", "获取");
-    字典.put("set", "设置");
+    术语词典.put("is", "为");
+    术语词典.put("get", "获取");
+    术语词典.put("set", "设置");
+    术语词典.put("instance", "个例");
   }
 
   public static String 翻译命名(String 英文命名) {
@@ -45,8 +47,8 @@ public class 命名翻译 {
   public static String 首选释义(String 英文) {
 
     // 优先根据內建词典查词
-    if (字典.containsKey(英文)) {
-      return 字典.get(英文);
+    if (术语词典.containsKey(英文)) {
+      return 术语词典.get(英文);
     }
     // 无视所有单字符的字段, 由于歧义太大
     if (英文.length() == 1 || 不需翻译(英文)) {
@@ -60,12 +62,13 @@ public class 命名翻译 {
     if (详细 == null) {
       return 英文;
     }
+
+    // TODO: 预处理, 获取原型, 比如downloads->download, has->have等
+    
     List<String> 中文词义 = 详细.中文释义;
     if (中文词义.size() == 0) {
       return 英文;
     }
-    
-    // TODO: 预处理, 获取原型, 比如downloads->download, has->have等
     
     // TODO: 分段0为词性 n. 等等. 需enum
     String 首选词义 = 英文;
@@ -87,10 +90,12 @@ public class 命名翻译 {
 
     // TODO: 确保它是中文词语(不包含任何特殊字符, 语义正确等等?)
     if (首选词义.indexOf(",") > -1) {
-      return 首选词义.substring(0, 首选词义.indexOf(","));
+      首选词义 = 首选词义.substring(0, 首选词义.indexOf(","));
     } else if (首选词义.indexOf(";") > -1) {
-      return 首选词义.substring(0, 首选词义.indexOf(";"));
+      首选词义 = 首选词义.substring(0, 首选词义.indexOf(";"));
     }
+
+    首选词义 = 消除括号内容(首选词义);
     return 首选词义;
   }
 
@@ -110,6 +115,16 @@ public class 命名翻译 {
       }
     }
     return 词性到释义;
+  }
+
+  static String 消除括号内容(String 中文释义) {
+    int 开括号位置 = 中文释义.indexOf("（");
+    int 闭括号位置 = 中文释义.indexOf("）");
+    if (开括号位置 == -1 || 闭括号位置 == -1) {
+      return 中文释义;
+    }
+    String 括号内容 = 中文释义.substring(开括号位置, 闭括号位置 + 1);
+    return 中文释义.replace(括号内容, "");
   }
 
   private static boolean 不需翻译(String 英文) {
