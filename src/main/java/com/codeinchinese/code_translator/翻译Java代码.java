@@ -43,6 +43,6 @@ public class 翻译Java代码 {
   }
 
   private static String 查词(String 英文) {
-    return 字典.containsKey(英文) ? 字典.get(英文) : 英文;
+    return 命名翻译.首选释义(英文);
   }
 }
