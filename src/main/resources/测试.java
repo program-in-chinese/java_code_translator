@@ -1,0 +1,26 @@
+package com.company.example;
+
+import java.io.Serializable;
+
+public class Person implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    private final Integer id;
+    private String fullName;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public Person(java.lang.Integer id) {
+        this.id = id;
+    }
+}
