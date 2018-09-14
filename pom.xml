@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.codeinchinese</groupId>
-	<artifactId>code_translator</artifactId>
+	<artifactId>java_code_translator</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>code_translator</name>
+	<name>Java源码翻译</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
