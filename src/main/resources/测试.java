@@ -23,4 +23,8 @@ public class Person implements Serializable {
     public Person(java.lang.Integer id) {
         this.id = id;
     }
+    
+    private Person[] getAllChildren() {
+      return null;
+    }
 }

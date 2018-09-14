@@ -1,4 +1,4 @@
-package com.codeinchinese.code_translator;
+package com.codeinchinese.java_code_translator;
 
 import java.util.Arrays;
 import java.util.List;

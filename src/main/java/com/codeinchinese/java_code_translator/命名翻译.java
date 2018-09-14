@@ -1,9 +1,12 @@
-package com.codeinchinese.code_translator;
+package com.codeinchinese.java_code_translator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.codeinchinese.英汉词典.英汉词典;
 import com.codeinchinese.英汉词典.词条;
@@ -12,6 +15,27 @@ public class 命名翻译 {
 
   private static final String 词性_计算机 = "[计]";
   private static final String 词性_名词 = "n.";
+  private static final Set<String> 不需翻译的词汇 = new HashSet<>(Arrays.asList("to", "for", "of"));
+
+  private static final Map<String, String> 字典 = new HashMap<>();
+  static {
+    字典.put("get", "获取");
+    字典.put("set", "设置");
+  }
+
+  public static String 翻译命名(String 英文命名) {
+    System.out.print(英文命名);
+    List<String> 命名拆分 = 命名处理.拆分Java命名(英文命名);
+    String 中文命名 = "";
+    for (String 拆分 : 命名拆分) {
+      中文命名 += 拆分.equals("_") ? "_" : 首选释义(拆分);
+    }
+    
+    // 过滤所有特殊字符
+    中文命名 = 中文命名.replaceAll("[\\-\\+\\.\\^:,<>]","");
+    System.out.println(" -> " + 中文命名);
+    return 中文命名;
+  }
 
   /**
    * 如找不到释义, 返回原词
@@ -20,23 +44,37 @@ public class 命名翻译 {
    */
   public static String 首选释义(String 英文) {
 
-    // TODO: 大写没有时再查询小写?
-    词条 详细 = 英汉词典.查词(英文.toLowerCase());
+    // 优先根据內建词典查词
+    if (字典.containsKey(英文)) {
+      return 字典.get(英文);
+    }
+    // 无视所有单字符的字段, 由于歧义太大
+    if (英文.length() == 1 || 不需翻译(英文)) {
+      return 英文;
+    }
+    // 大写没有时再查询小写
+    词条 详细 = 英汉词典.查词(英文);
+    if (详细 == null) {
+      详细 = 英汉词典.查词(英文.toLowerCase());
+    }
     if (详细 == null) {
       return 英文;
     }
-    // System.out.println(详细);
     List<String> 中文词义 = 详细.中文释义;
     if (中文词义.size() == 0) {
       return 英文;
     }
+    
+    // TODO: 预处理, 获取原型, 比如downloads->download, has->have等
+    
     // TODO: 分段0为词性 n. 等等. 需enum
     String 首选词义 = 英文;
     Map<String, List<String>> 词性到释义 = 分词性(详细);
+    
     if (词性到释义.containsKey(词性_计算机)) {
       首选词义 = 词性到释义.get(词性_计算机).get(0);
     } else {
-      // TODO: 第一批的首个?
+      // 第一批的首个
       String 首批词义 = 中文词义.get(0);
       String[] 分段 = 首批词义.split(" ");
       if (分段.length == 1) {
@@ -72,5 +110,9 @@ public class 命名翻译 {
       }
     }
     return 词性到释义;
+  }
+
+  private static boolean 不需翻译(String 英文) {
+    return 不需翻译的词汇.contains(英文);
   }
 }
