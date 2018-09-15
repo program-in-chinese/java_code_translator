@@ -14,6 +14,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<version.roaster>2.20.1.Final</version.roaster>
+		<java.version>1.8</java.version>
 	</properties>
 
 	<dependencies>

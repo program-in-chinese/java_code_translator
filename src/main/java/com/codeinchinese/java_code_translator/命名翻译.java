@@ -28,7 +28,6 @@ public class 命名翻译 {
   }
 
   public static String 翻译命名(String 英文命名) {
-    System.out.print(英文命名);
     List<String> 命名拆分 = 命名处理.拆分Java命名(英文命名);
     String 中文命名 = "";
     for (String 拆分 : 命名拆分) {
@@ -37,7 +36,7 @@ public class 命名翻译 {
 
     // 过滤所有特殊字符
     中文命名 = 中文命名.replaceAll("[\\-\\+\\.\\^:,<>]", "");
-    System.out.println(" -> " + 中文命名);
+    //System.out.println(" -> " + 中文命名);
     return 中文命名;
   }
 
