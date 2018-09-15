@@ -1,10 +1,12 @@
-package com.codeinchinese.java_code_translator;
+package com.codeinchinese.java源码翻译;
 
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 
 import org.junit.Test;
+
+import com.codeinchinese.java源码翻译.命名处理;
 
 public class 命名处理Test {
 
