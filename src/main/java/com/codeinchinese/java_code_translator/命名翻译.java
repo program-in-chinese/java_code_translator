@@ -22,7 +22,9 @@ public class 命名翻译 {
     术语词典.put("is", "为");
     术语词典.put("get", "获取");
     术语词典.put("set", "设置");
+    术语词典.put("has", "具有");
     术语词典.put("instance", "个例");
+    术语词典.put("env", "环境");
   }
 
   public static String 翻译命名(String 英文命名) {
@@ -50,6 +52,11 @@ public class 命名翻译 {
     // 优先根据內建词典查词
     if (术语词典.containsKey(英文)) {
       return 术语词典.get(英文);
+    } else {
+      String 小写 = 英文.toLowerCase();
+      if (术语词典.containsKey(小写)) {
+        return 术语词典.get(小写);
+      }
     }
     // 无视所有单字符的字段, 由于歧义太大
     if (英文.length() == 1 || 不需翻译(英文)) {
@@ -116,10 +123,17 @@ public class 命名翻译 {
     }
     return 词性到释义;
   }
-
+  
+  // TODO: 提取非外部词典部分, 测试太耗时; 或者缩减英汉词典为测试专用
   static String 消除括号内容(String 中文释义) {
-    int 开括号位置 = 中文释义.indexOf("（");
-    int 闭括号位置 = 中文释义.indexOf("）");
+    String 清理后 = 消除括号内容(中文释义, "（", "）");
+    清理后 = 消除括号内容(清理后, "(", ")");
+    return 清理后;
+  }
+
+  static String 消除括号内容(String 中文释义, String 开括号, String 闭括号) {
+    int 开括号位置 = 中文释义.indexOf(开括号);
+    int 闭括号位置 = 中文释义.indexOf(闭括号);
     if (开括号位置 == -1 || 闭括号位置 == -1) {
       return 中文释义;
     }

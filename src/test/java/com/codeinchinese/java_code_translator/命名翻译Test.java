@@ -14,6 +14,10 @@ public class 命名翻译Test {
     assertEquals("我的", 命名翻译.首选释义("my"));
     assertEquals("我的", 命名翻译.首选释义("My"));
     assertEquals("nosuchword", 命名翻译.首选释义("nosuchword"));
+    
+    // 术语词典
+    assertEquals("个例", 命名翻译.首选释义("instance"));
+    assertEquals("个例", 命名翻译.首选释义("Instance"));
   }
 
   @Test
@@ -31,5 +35,6 @@ public class 命名翻译Test {
   public void 消除括号内容() {
     assertEquals("M类别", 命名翻译.消除括号内容("M类别"));
     assertEquals("下载", 命名翻译.消除括号内容("下载（download的复数）"));
+    assertEquals("一", 命名翻译.消除括号内容("一(个)"));
   }
 }

@@ -37,6 +37,7 @@ public class 翻译Java代码 {
         System.out.println("不合法属性名: " + 属性名);
       }
 
+      // TODO: 需特别处理[]等, 或者<>
       String 属性类型名 = 某属性.getType().getName();
       某属性.setType(查词(属性类型名));
     }
