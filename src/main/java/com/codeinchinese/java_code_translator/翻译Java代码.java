@@ -13,6 +13,16 @@ public class 翻译Java代码 {
 
   public static void main(String[] 参数) throws Exception {
     String 源码 = 文件功用.取源文件文本("MProduct.java");
+
+    long 时间戳 = System.currentTimeMillis();
+    System.out.println(汉化源码结构(源码));
+    System.out.println(System.currentTimeMillis() - 时间戳);
+    时间戳 = System.currentTimeMillis();
+    System.out.println(汉化源码结构(文件功用.取源文件文本("测试.java")));
+    System.out.println(System.currentTimeMillis() - 时间戳);
+  }
+  
+  public static String 汉化源码结构(String 源码) {
     JavaClassSource 分析结果 = Roaster.parse(JavaClassSource.class, 源码);
 
     // 汉化类名
@@ -54,8 +64,7 @@ public class 翻译Java代码 {
         }
       }
     }
-    
-    //System.out.println(分析结果);
+    return 分析结果.toString();
   }
 
   private static String 查词(String 英文) {
