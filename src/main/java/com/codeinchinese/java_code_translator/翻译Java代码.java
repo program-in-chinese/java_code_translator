@@ -2,6 +2,7 @@ package com.codeinchinese.java_code_translator;
 
 import java.util.List;
 
+import org.jboss.forge.roaster.ParserException;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
@@ -23,7 +24,12 @@ public class 翻译Java代码 {
   }
   
   public static String 汉化源码结构(String 源码) {
-    JavaClassSource 分析结果 = Roaster.parse(JavaClassSource.class, 源码);
+    JavaClassSource 分析结果;
+    try {
+      分析结果 = Roaster.parse(JavaClassSource.class, 源码);
+    } catch (ParserException e) {
+      return e.getLocalizedMessage();
+    }
 
     // 汉化类名
     分析结果.setName(查词(分析结果.getName()));
