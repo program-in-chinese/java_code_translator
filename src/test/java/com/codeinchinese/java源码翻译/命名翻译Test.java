@@ -4,8 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.codeinchinese.java源码翻译.命名翻译;
-
 // 耗时长 (需载入词典)
 public class 命名翻译Test {
 
@@ -16,9 +14,13 @@ public class 命名翻译Test {
     assertEquals("我的", 命名翻译.首选释义("my"));
     assertEquals("我的", 命名翻译.首选释义("My"));
     assertEquals("nosuchword", 命名翻译.首选释义("nosuchword"));
-    
-    // 术语词典
+  }
+
+  @Test
+  public void 首选释义_术语词典() {
     assertEquals("个例", 命名翻译.首选释义("instance"));
+
+    // 大写
     assertEquals("个例", 命名翻译.首选释义("Instance"));
   }
 

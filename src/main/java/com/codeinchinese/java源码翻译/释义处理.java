@@ -9,7 +9,7 @@ import com.codeinchinese.英汉词典.词条;
 
 public class 释义处理 {
 
-  private static final String 词性_计算机 = "[计]";
+  static final String 词性_计算机 = "[计]";
 
   public static Map<String, List<String>> 分词性(词条 某词条) {
     Map<String, List<String>> 词性到释义 = new HashMap<>();
