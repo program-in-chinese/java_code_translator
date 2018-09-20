@@ -27,4 +27,8 @@ public class Person implements Serializable {
     private Person[] getAllChildren() {
       return null;
     }
+    
+    private List<Person[]> getSomeChildren() {
+      return null;
+    }
 }
