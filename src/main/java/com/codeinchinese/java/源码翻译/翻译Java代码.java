@@ -1,5 +1,6 @@
 package com.codeinchinese.java.源码翻译;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.jboss.forge.roaster.ParserException;
@@ -13,6 +14,11 @@ import com.codeinchinese.功用.文件功用;
 
 public class 翻译Java代码 {
 
+  static final HashMap<String, String> 内置字典 = new HashMap<>();
+  static {
+    // TODO: 添加内置字典
+  }
+
   public static void main(String[] 参数) throws Exception {
     String 源码 = 文件功用.取源文件文本("测试.java");
 
@@ -25,25 +31,28 @@ public class 翻译Java代码 {
   }
   
   public static String 汉化源码结构(String 源码) {
-    JavaClassSource 分析结果;
+    JavaClassSource 类结构 = 取类结构(源码);
     try {
-      分析结果 = Roaster.parse(JavaClassSource.class, 源码);
+      类结构 = Roaster.parse(JavaClassSource.class, 源码);
     } catch (ParserException e) {
       return e.getLocalizedMessage();
     }
 
-    // 汉化类名
-    分析结果.setName(查词(分析结果.getName()));
-    /*
-    List<FieldSource<JavaClassSource>> 域 = 分析结果.getFields();
-    for (FieldSource<JavaClassSource> 某域 : 域) {
-        String 域名 = 某域.getName();
-        某域.setName(查词((域名));
-    }*/
+    汉化类(类结构);
+    汉化属性(类结构);
+    汉化方法(类结构);
     
+    return 类结构.toString();
+  }
+
+  static void 汉化类(JavaClassSource 类结构) {
+    类结构.setName(查词(类结构.getName()));
+  }
+
+  static void 汉化属性(JavaClassSource 类结构) {
     // 汉化Bean属性名, 以及属性的类型名
     // 所有getXX/setXX方法中的XX也被识别为属性, 无论是否有对应域
-    for (PropertySource<JavaClassSource> 某属性 : 分析结果.getProperties()) {
+    for (PropertySource<JavaClassSource> 某属性 : 类结构.getProperties()) {
       String 属性名 = 某属性.getName();
       
       // 需要大写首字母, 因为getUOMPrecision中, 提取出的属性名为uOMPrecision
@@ -73,8 +82,10 @@ public class 翻译Java代码 {
       String 属性类型名 = 类型.getName();
       某属性.setType(查词(属性类型名));
     }
-    
-    List<MethodSource<JavaClassSource>> 方法 = 分析结果.getMethods();
+  }
+
+  static void 汉化方法(JavaClassSource 类结构) {
+    List<MethodSource<JavaClassSource>> 方法 = 类结构.getMethods();
     for (MethodSource<JavaClassSource> 某方法 : 方法) {
       // 构造方法已随类型名重命名, 且无返回类型
       if (!某方法.isConstructor()) {
@@ -92,10 +103,21 @@ public class 翻译Java代码 {
       }
 
     }
-    return 分析结果.toString();
   }
 
+  static JavaClassSource 取类结构(String 源码) throws ParserException {
+    try {
+      return Roaster.parse(JavaClassSource.class, 源码);
+    } catch (ParserException e) {
+      throw e;
+    }
+  }
+
+  // TODO: 添加字典缓存
   private static String 查词(String 英文) {
+    if (内置字典.containsKey(英文)) {
+      return 内置字典.get(英文);
+    }
     String 释义 = 命名翻译.翻译命名(英文);
     return 释义;
   }
