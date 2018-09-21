@@ -1,8 +1,10 @@
-package com.codeinchinese.java源码翻译;
+package com.codeinchinese.java.源码翻译;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+
+import com.codeinchinese.java.源码翻译.释义处理;
 
 public class 释义处理Test {
 

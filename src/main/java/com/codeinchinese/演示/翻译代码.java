@@ -3,7 +3,7 @@ package com.codeinchinese.演示;
 import java.util.Arrays;
 import java.util.List;
 
-import com.codeinchinese.java源码翻译.命名翻译;
+import com.codeinchinese.java.源码翻译.命名翻译;
 
 /**
  * Hello world!

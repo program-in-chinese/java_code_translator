@@ -1,4 +1,4 @@
-package com.codeinchinese.java源码翻译;
+package com.codeinchinese.java.源码翻译;
 
 import java.util.ArrayList;
 import java.util.HashMap;
