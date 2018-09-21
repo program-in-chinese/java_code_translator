@@ -31,6 +31,20 @@ public class 翻译Java代码Test {
   }
 
   @Test
+  public void 翻译数组类型属性() {
+    String 源码 = "public class Class1 {\n" +
+        "    private final PropertyType1[] property1;}";
+    JavaClassSource 类结构 = 翻译Java代码.取类结构(源码);
+    翻译Java代码.翻译属性(类结构);
+    List<PropertySource<JavaClassSource>> 属性列表 = 类结构.getProperties();
+    assertEquals(1, 属性列表.size());
+    PropertySource<JavaClassSource> 属性 = 属性列表.get(0);
+
+    assertEquals("属性1", 属性.getName());
+    assertEquals("属性类1[]", 属性.getType().getName());
+  }
+
+  @Test
   public void 翻译属性() {
     String 源码 = "public class Class1 {\n" +
         "    private final PropertyType1 property1;}";

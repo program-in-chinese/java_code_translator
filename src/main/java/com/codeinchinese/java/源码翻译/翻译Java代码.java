@@ -86,8 +86,7 @@ public class 翻译Java代码 {
       if (类型 instanceof ParameterizedType) {
         List 类型参数 = ((ParameterizedType)类型).typeArguments();
       }*/
-      String 属性类型名 = 类型.getName();
-      某属性.setType(查词(属性类型名));
+      某属性.setType(翻译类型(类型));
     }
   }
 
@@ -98,29 +97,35 @@ public class 翻译Java代码 {
       if (!某方法.isConstructor()) {
         String 方法名 = 某方法.getName();
         try {
-          System.out.println("方法名: " + 方法名);
-          某方法.setName(查词(方法名));
+          String 翻译方法名 = 查词(方法名);
+          System.out.println("方法名: " + 方法名 + " -> " + 翻译方法名);
+          某方法.setName(翻译方法名);
         } catch (IllegalArgumentException e) {
           System.out.println("不合法方法名: " + 方法名);
         }
         
         // TODO: get方法已随属性名改变了返回类型, 如Integer getId()
         Type<JavaClassSource> 方法类型 = 某方法.getReturnType();
-        String 方法返回类型 = 方法类型.getName();
+        某方法.setReturnType(翻译类型(方法类型));
 
-        if (!关键词字典.containsKey(方法返回类型)) {
-          int 数组维度 = 方法类型.getArrayDimensions();
-          String 提取数组类型 = 方法返回类型.replaceAll("\\[\\]", "");
-          提取数组类型 = 查词(提取数组类型);
-          for (int i = 0; i < 数组维度; i++) {
-            提取数组类型 += "[]";
-          }
-          某方法.setReturnType(提取数组类型);
-        }
         System.out.println(方法类型.getName() + " 数组维度: " + 方法类型.getArrayDimensions() + " type arg:" + 方法类型.getTypeArguments());
       }
 
     }
+  }
+
+  static String 翻译类型(Type<JavaClassSource> 类型) {
+    String 返回类型 = 类型.getName();
+    String 提取数组类型 = 返回类型;
+    if (!关键词字典.containsKey(返回类型)) {
+      int 数组维度 = 类型.getArrayDimensions();
+      提取数组类型 = 提取数组类型.replaceAll("\\[\\]", "");
+      提取数组类型 = 查词(提取数组类型);
+      for (int i = 0; i < 数组维度; i++) {
+        提取数组类型 += "[]";
+      }
+    }
+    return 提取数组类型;
   }
 
   static JavaClassSource 取类结构(String 源码) throws ParserException {
