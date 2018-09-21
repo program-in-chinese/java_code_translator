@@ -14,6 +14,7 @@ import com.codeinchinese.功用.文件功用;
 
 public class 翻译Java代码 {
 
+  // 仅为测试用, 避免载入全部词汇, 也不需拆分命名
   static final HashMap<String, String> 内置字典 = new HashMap<>();
   static {
     // TODO: 添加内置字典
@@ -26,7 +27,7 @@ public class 翻译Java代码 {
     System.out.println(汉化源码结构(源码));
     System.out.println(System.currentTimeMillis() - 时间戳);
     时间戳 = System.currentTimeMillis();
-    System.out.println(汉化源码结构(文件功用.取源文件文本("测试.java")));
+    System.out.println(汉化源码结构(文件功用.取源文件文本("MProduct.java")));
     System.out.println(System.currentTimeMillis() - 时间戳);
   }
   
@@ -55,8 +56,11 @@ public class 翻译Java代码 {
     for (PropertySource<JavaClassSource> 某属性 : 类结构.getProperties()) {
       String 属性名 = 某属性.getName();
       
-      // 需要大写首字母, 因为getUOMPrecision中, 提取出的属性名为uOMPrecision
-      属性名 = 属性名.substring(0, 1).toUpperCase() + 属性名.substring(1);
+      // 如果无相关Field, 假设驼峰命名, 如果第二个字母也是大写, 则大写首字母
+      // 否则, getUOMPrecision中, 提取出的属性名为uOMPrecision
+      if (!某属性.hasField() && 属性名.length() > 1 && Character.isUpperCase(属性名.charAt(1))) {
+        属性名 = 属性名.substring(0, 1).toUpperCase() + 属性名.substring(1);
+      }
       try {
         System.out.println("属性名: " + 属性名);
         某属性.setName(查词(属性名));

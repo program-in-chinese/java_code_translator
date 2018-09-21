@@ -18,6 +18,7 @@ public class 翻译Java代码Test {
     翻译Java代码.内置字典.put("PropertyType1", "属性类1");
     翻译Java代码.内置字典.put("MethodType1", "方法返回类型1");
     翻译Java代码.内置字典.put("property1", "属性1");
+    翻译Java代码.内置字典.put("PROPERTY1", "全大写属性1");
     翻译Java代码.内置字典.put("method1", "方法1");
   }
 
@@ -39,9 +40,66 @@ public class 翻译Java代码Test {
     assertEquals(1, 属性列表.size());
     PropertySource<JavaClassSource> 属性 = 属性列表.get(0);
 
-    // TODO: 首字母大写导致此问题
-    assertEquals("Property1", 属性.getName());
+    assertEquals("属性1", 属性.getName());
     assertEquals("属性类1", 属性.getType().getName());
+  }
+
+  @Test
+  public void 汉化属性方法() {
+    String 源码 = "public class Class1 {\n"
+        + "    public MethodType1 getProperty1() {\n"
+        + "        return null;"
+        + "    }\n"
+        + "}";
+    JavaClassSource 类结构 = 翻译Java代码.取类结构(源码);
+    翻译Java代码.汉化属性(类结构);
+    List<PropertySource<JavaClassSource>> 属性列表 = 类结构.getProperties();
+    assertEquals(1, 属性列表.size());
+    PropertySource<JavaClassSource> 属性 = 属性列表.get(0);
+    assertEquals("属性1", 属性.getName());
+    
+    assertEquals("public class Class1 {\n"
+        + "    public 方法返回类型1 get属性1() {\n"
+        + "        return null;"
+        + "    }\n"
+        + "}", 类结构.toUnformattedString());
+  }
+
+  @Test
+  public void 汉化大写属性() {
+    String 源码 = "public class Class1 {\n"
+        + "    private final PropertyType1 PROPERTY1;}";
+    JavaClassSource 类结构 = 翻译Java代码.取类结构(源码);
+    翻译Java代码.汉化属性(类结构);
+    List<PropertySource<JavaClassSource>> 属性列表 = 类结构.getProperties();
+    assertEquals(1, 属性列表.size());
+    PropertySource<JavaClassSource> 属性 = 属性列表.get(0);
+    assertEquals("全大写属性1", 属性.getName());
+
+    assertEquals("public class Class1 {\n"
+        + "    private final 属性类1 全大写属性1;}",
+        类结构.toUnformattedString());
+  }
+
+  @Test
+  public void 汉化大写属性方法() {
+    String 源码 = "public class Class1 {\n"
+        + "    public MethodType1 getPROPERTY1() {\n"
+        + "        return null;"
+        + "    }\n"
+        + "}";
+    JavaClassSource 类结构 = 翻译Java代码.取类结构(源码);
+    翻译Java代码.汉化属性(类结构);
+    List<PropertySource<JavaClassSource>> 属性列表 = 类结构.getProperties();
+    assertEquals(1, 属性列表.size());
+    PropertySource<JavaClassSource> 属性 = 属性列表.get(0);
+    assertEquals("全大写属性1", 属性.getName());
+    
+    assertEquals("public class Class1 {\n"
+        + "    public 方法返回类型1 get全大写属性1() {\n"
+        + "        return null;"
+        + "    }\n"
+        + "}", 类结构.toUnformattedString());
   }
 
   @Test
@@ -55,11 +113,10 @@ public class 翻译Java代码Test {
     翻译Java代码.汉化方法(类结构);
     List<MethodSource<JavaClassSource>> 方法列表 = 类结构.getMethods();
     assertEquals(1, 方法列表.size());
-    MethodSource<JavaClassSource> 属性 = 方法列表.get(0);
-    assertEquals("方法1", 属性.getName());
+    MethodSource<JavaClassSource> 方法 = 方法列表.get(0);
+    assertEquals("方法1", 方法.getName());
 
     // TODO: 翻译返回类型
-    assertEquals("MethodType1", 属性.getReturnType().getName());
+    assertEquals("MethodType1", 方法.getReturnType().getName());
   }
-
 }
