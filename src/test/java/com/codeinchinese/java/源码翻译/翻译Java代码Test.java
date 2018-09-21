@@ -116,7 +116,23 @@ public class 翻译Java代码Test {
     MethodSource<JavaClassSource> 方法 = 方法列表.get(0);
     assertEquals("方法1", 方法.getName());
 
-    // TODO: 翻译返回类型
-    assertEquals("MethodType1", 方法.getReturnType().getName());
+    assertEquals("方法返回类型1", 方法.getReturnType().getName());
+  }
+
+  @Test
+  public void 不汉化void() {
+    String 源码 = "public class Class1 {\n"
+        + "    public void method1() {\n"
+        + "        return;\n"
+        + "    }\n"
+        + "}";
+    JavaClassSource 类结构 = 翻译Java代码.取类结构(源码);
+    翻译Java代码.汉化方法(类结构);
+    List<MethodSource<JavaClassSource>> 方法列表 = 类结构.getMethods();
+    assertEquals(1, 方法列表.size());
+    MethodSource<JavaClassSource> 方法 = 方法列表.get(0);
+    assertEquals("方法1", 方法.getName());
+
+    assertEquals("void", 方法.getReturnType().getName());
   }
 }

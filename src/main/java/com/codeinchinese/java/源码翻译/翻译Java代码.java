@@ -16,8 +16,11 @@ public class 翻译Java代码 {
 
   // 仅为测试用, 避免载入全部词汇, 也不需拆分命名
   static final HashMap<String, String> 内置字典 = new HashMap<>();
+
+  static final HashMap<String, String> 关键词字典 = new HashMap<>();
+
   static {
-    // TODO: 添加内置字典
+    关键词字典.put("void", "void");
   }
 
   public static void main(String[] 参数) throws Exception {
@@ -103,6 +106,10 @@ public class 翻译Java代码 {
         
         // TODO: get方法已随属性名改变了返回类型, 如Integer getId()
         Type<JavaClassSource> 方法类型 = 某方法.getReturnType();
+        String 方法返回类型 = 方法类型.getName();
+        if (!关键词字典.containsKey(方法返回类型)) {
+          某方法.setReturnType(查词(方法返回类型));
+        }
         System.out.println(方法类型.getName() + " 数组维度: " + 方法类型.getArrayDimensions() + " type arg:" + 方法类型.getTypeArguments());
       }
 
