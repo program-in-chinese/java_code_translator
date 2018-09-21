@@ -23,19 +23,19 @@ public class 翻译Java代码Test {
   }
 
   @Test
-  public void 汉化类() {
+  public void 翻译类() {
     String 源码 = "public class Class1 {}";
     JavaClassSource 类结构 = 翻译Java代码.取类结构(源码);
-    翻译Java代码.汉化类(类结构);
+    翻译Java代码.翻译类(类结构);
     assertEquals("类1", 类结构.getName());
   }
 
   @Test
-  public void 汉化属性() {
+  public void 翻译属性() {
     String 源码 = "public class Class1 {\n" +
         "    private final PropertyType1 property1;}";
     JavaClassSource 类结构 = 翻译Java代码.取类结构(源码);
-    翻译Java代码.汉化属性(类结构);
+    翻译Java代码.翻译属性(类结构);
     List<PropertySource<JavaClassSource>> 属性列表 = 类结构.getProperties();
     assertEquals(1, 属性列表.size());
     PropertySource<JavaClassSource> 属性 = 属性列表.get(0);
@@ -45,14 +45,14 @@ public class 翻译Java代码Test {
   }
 
   @Test
-  public void 汉化属性方法() {
+  public void 翻译属性方法() {
     String 源码 = "public class Class1 {\n"
         + "    public MethodType1 getProperty1() {\n"
         + "        return null;"
         + "    }\n"
         + "}";
     JavaClassSource 类结构 = 翻译Java代码.取类结构(源码);
-    翻译Java代码.汉化属性(类结构);
+    翻译Java代码.翻译属性(类结构);
     List<PropertySource<JavaClassSource>> 属性列表 = 类结构.getProperties();
     assertEquals(1, 属性列表.size());
     PropertySource<JavaClassSource> 属性 = 属性列表.get(0);
@@ -66,11 +66,11 @@ public class 翻译Java代码Test {
   }
 
   @Test
-  public void 汉化大写属性() {
+  public void 翻译大写属性() {
     String 源码 = "public class Class1 {\n"
         + "    private final PropertyType1 PROPERTY1;}";
     JavaClassSource 类结构 = 翻译Java代码.取类结构(源码);
-    翻译Java代码.汉化属性(类结构);
+    翻译Java代码.翻译属性(类结构);
     List<PropertySource<JavaClassSource>> 属性列表 = 类结构.getProperties();
     assertEquals(1, 属性列表.size());
     PropertySource<JavaClassSource> 属性 = 属性列表.get(0);
@@ -82,14 +82,14 @@ public class 翻译Java代码Test {
   }
 
   @Test
-  public void 汉化大写属性方法() {
+  public void 翻译大写属性方法() {
     String 源码 = "public class Class1 {\n"
         + "    public MethodType1 getPROPERTY1() {\n"
         + "        return null;"
         + "    }\n"
         + "}";
     JavaClassSource 类结构 = 翻译Java代码.取类结构(源码);
-    翻译Java代码.汉化属性(类结构);
+    翻译Java代码.翻译属性(类结构);
     List<PropertySource<JavaClassSource>> 属性列表 = 类结构.getProperties();
     assertEquals(1, 属性列表.size());
     PropertySource<JavaClassSource> 属性 = 属性列表.get(0);
@@ -103,14 +103,14 @@ public class 翻译Java代码Test {
   }
 
   @Test
-  public void 汉化方法() {
+  public void 翻译方法() {
     String 源码 = "public class Class1 {\n"
         + "    public MethodType1 method1() {\n"
         + "        return 0;\n"
         + "    }\n"
         + "}";
     JavaClassSource 类结构 = 翻译Java代码.取类结构(源码);
-    翻译Java代码.汉化方法(类结构);
+    翻译Java代码.翻译方法(类结构);
     List<MethodSource<JavaClassSource>> 方法列表 = 类结构.getMethods();
     assertEquals(1, 方法列表.size());
     MethodSource<JavaClassSource> 方法 = 方法列表.get(0);
@@ -120,14 +120,30 @@ public class 翻译Java代码Test {
   }
 
   @Test
-  public void 不汉化void() {
+  public void 翻译数组返回类型方法() {
+    String 源码 = "public class Class1 {\n"
+        + "    public MethodType1[] method1() {\n"
+        + "        return 0;\n"
+        + "    }\n"
+        + "}";
+    JavaClassSource 类结构 = 翻译Java代码.取类结构(源码);
+    翻译Java代码.翻译方法(类结构);
+    List<MethodSource<JavaClassSource>> 方法列表 = 类结构.getMethods();
+    assertEquals(1, 方法列表.size());
+    MethodSource<JavaClassSource> 方法 = 方法列表.get(0);
+
+    assertEquals("方法返回类型1[]", 方法.getReturnType().getName());
+  }
+
+  @Test
+  public void 不翻译void() {
     String 源码 = "public class Class1 {\n"
         + "    public void method1() {\n"
         + "        return;\n"
         + "    }\n"
         + "}";
     JavaClassSource 类结构 = 翻译Java代码.取类结构(源码);
-    翻译Java代码.汉化方法(类结构);
+    翻译Java代码.翻译方法(类结构);
     List<MethodSource<JavaClassSource>> 方法列表 = 类结构.getMethods();
     assertEquals(1, 方法列表.size());
     MethodSource<JavaClassSource> 方法 = 方法列表.get(0);

@@ -27,14 +27,14 @@ public class 翻译Java代码 {
     String 源码 = 文件功用.取源文件文本("测试.java");
 
     long 时间戳 = System.currentTimeMillis();
-    System.out.println(汉化源码结构(源码));
+    System.out.println(翻译源码结构(源码));
     System.out.println(System.currentTimeMillis() - 时间戳);
     时间戳 = System.currentTimeMillis();
-    System.out.println(汉化源码结构(文件功用.取源文件文本("MProduct.java")));
+    System.out.println(翻译源码结构(文件功用.取源文件文本("MProduct.java")));
     System.out.println(System.currentTimeMillis() - 时间戳);
   }
   
-  public static String 汉化源码结构(String 源码) {
+  public static String 翻译源码结构(String 源码) {
     JavaClassSource 类结构 = 取类结构(源码);
     try {
       类结构 = Roaster.parse(JavaClassSource.class, 源码);
@@ -42,19 +42,19 @@ public class 翻译Java代码 {
       return e.getLocalizedMessage();
     }
 
-    汉化类(类结构);
-    汉化属性(类结构);
-    汉化方法(类结构);
+    翻译类(类结构);
+    翻译属性(类结构);
+    翻译方法(类结构);
     
     return 类结构.toString();
   }
 
-  static void 汉化类(JavaClassSource 类结构) {
+  static void 翻译类(JavaClassSource 类结构) {
     类结构.setName(查词(类结构.getName()));
   }
 
-  static void 汉化属性(JavaClassSource 类结构) {
-    // 汉化Bean属性名, 以及属性的类型名
+  static void 翻译属性(JavaClassSource 类结构) {
+    // 翻译Bean属性名, 以及属性的类型名
     // 所有getXX/setXX方法中的XX也被识别为属性, 无论是否有对应域
     for (PropertySource<JavaClassSource> 某属性 : 类结构.getProperties()) {
       String 属性名 = 某属性.getName();
@@ -91,7 +91,7 @@ public class 翻译Java代码 {
     }
   }
 
-  static void 汉化方法(JavaClassSource 类结构) {
+  static void 翻译方法(JavaClassSource 类结构) {
     List<MethodSource<JavaClassSource>> 方法 = 类结构.getMethods();
     for (MethodSource<JavaClassSource> 某方法 : 方法) {
       // 构造方法已随类型名重命名, 且无返回类型
@@ -107,8 +107,15 @@ public class 翻译Java代码 {
         // TODO: get方法已随属性名改变了返回类型, 如Integer getId()
         Type<JavaClassSource> 方法类型 = 某方法.getReturnType();
         String 方法返回类型 = 方法类型.getName();
+
         if (!关键词字典.containsKey(方法返回类型)) {
-          某方法.setReturnType(查词(方法返回类型));
+          int 数组维度 = 方法类型.getArrayDimensions();
+          String 提取数组类型 = 方法返回类型.replaceAll("\\[\\]", "");
+          提取数组类型 = 查词(提取数组类型);
+          for (int i = 0; i < 数组维度; i++) {
+            提取数组类型 += "[]";
+          }
+          某方法.setReturnType(提取数组类型);
         }
         System.out.println(方法类型.getName() + " 数组维度: " + 方法类型.getArrayDimensions() + " type arg:" + 方法类型.getTypeArguments());
       }
