@@ -1,17 +1,19 @@
 package com.codeinchinese.java.源码翻译;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-
-import com.codeinchinese.java.源码翻译.命名翻译;
 
 // 耗时长 (需载入词典)
 public class 命名翻译Test {
 
   @Test
   public void 首选释义() {
+    assertTrue("尚未查词class", !命名翻译.已查词典.containsKey("class"));
     assertEquals("类别", 命名翻译.首选释义("class"));
+    assertTrue("已查词class", 命名翻译.已查词典.containsKey("class"));
+    
     assertEquals("类别", 命名翻译.首选释义("Class"));
     assertEquals("我的", 命名翻译.首选释义("my"));
     assertEquals("我的", 命名翻译.首选释义("My"));

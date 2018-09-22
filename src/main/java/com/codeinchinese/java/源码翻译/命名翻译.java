@@ -12,9 +12,7 @@ import com.codeinchinese.英汉词典.词条;
 
 public class 命名翻译 {
 
-  private static final String 词性_名词 = "n.";
   private static final Set<String> 不需翻译的词汇 = new HashSet<>(Arrays.asList("to", "for", "of"));
-
   private static final Map<String, String> 术语词典 = new HashMap<>();
   static {
     术语词典.put("is", "为");
@@ -24,6 +22,7 @@ public class 命名翻译 {
     术语词典.put("instance", "个例");
     术语词典.put("env", "环境");
   }
+  static final Map<String, String> 已查词典 = new HashMap<>();
 
   public static String 翻译命名(String 英文命名) {
     List<String> 命名拆分 = 命名处理.拆分Java命名(英文命名);
@@ -45,6 +44,10 @@ public class 命名翻译 {
    * @return
    */
   public static String 首选释义(String 英文) {
+
+    if (已查词典.containsKey(英文)) {
+      return 已查词典.get(英文);
+    }
 
     // 优先根据內建词典查词
     if (术语词典.containsKey(英文)) {
@@ -68,7 +71,9 @@ public class 命名翻译 {
       return 英文;
     }
 
-    return 释义处理.首选(英文, 详细);
+    String 首选释义 = 释义处理.首选(英文, 详细);
+    已查词典.put(英文, 首选释义);
+    return 首选释义;
   }
 
 

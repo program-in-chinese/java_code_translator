@@ -1,6 +1,7 @@
 package com.codeinchinese.java.源码翻译;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import org.jboss.forge.roaster.ParserException;
@@ -14,6 +15,7 @@ import com.codeinchinese.功用.文件功用;
 
 public class 翻译Java代码 {
 
+  private static final HashSet<String> 已翻译属性方法 = new HashSet<>();
   // 仅为测试用, 避免载入全部词汇, 也不需拆分命名
   static final HashMap<String, String> 内置字典 = new HashMap<>();
 
@@ -26,12 +28,8 @@ public class 翻译Java代码 {
   public static void main(String[] 参数) throws Exception {
     String 源码 = 文件功用.取源文件文本("测试.java");
 
-    long 时间戳 = System.currentTimeMillis();
     System.out.println(翻译源码结构(源码));
-    System.out.println(System.currentTimeMillis() - 时间戳);
-    时间戳 = System.currentTimeMillis();
-    System.out.println(翻译源码结构(文件功用.取源文件文本("MProduct.java")));
-    System.out.println(System.currentTimeMillis() - 时间戳);
+    翻译源码结构(文件功用.取源文件文本("MProduct.java"));
   }
   
   public static String 翻译源码结构(String 源码) {
@@ -46,7 +44,7 @@ public class 翻译Java代码 {
     翻译属性(类结构);
     翻译方法(类结构);
     
-    return 类结构.toString();
+    return 类结构.toUnformattedString();
   }
 
   static void 翻译类(JavaClassSource 类结构) {
@@ -54,9 +52,10 @@ public class 翻译Java代码 {
   }
 
   static void 翻译属性(JavaClassSource 类结构) {
+    List<PropertySource<JavaClassSource>> 属性 = 类结构.getProperties();
     // 翻译Bean属性名, 以及属性的类型名
     // 所有getXX/setXX方法中的XX也被识别为属性, 无论是否有对应域
-    for (PropertySource<JavaClassSource> 某属性 : 类结构.getProperties()) {
+    for (PropertySource<JavaClassSource> 某属性 : 属性) {
       String 属性名 = 某属性.getName();
       
       // 如果无相关Field, 假设驼峰命名, 如果第二个字母也是大写, 则大写首字母
@@ -65,22 +64,25 @@ public class 翻译Java代码 {
         属性名 = 属性名.substring(0, 1).toUpperCase() + 属性名.substring(1);
       }
       try {
-        System.out.println("属性名: " + 属性名);
-        某属性.setName(查词(属性名));
+        //System.out.println("属性名: " + 属性名);
+        String 翻译属性名 = 查词(属性名);
+        某属性.setName(翻译属性名);
+        已翻译属性方法.add("get" + 翻译属性名);
+        已翻译属性方法.add("set" + 翻译属性名);
       } catch (IllegalArgumentException e) {
         System.out.println("不合法属性名: " + 属性名);
       }
 
       // TODO: 需特别处理[] - ArrayType等, 或者<>
       Type<JavaClassSource> 类型 = 某属性.getType();
-      List<Type<JavaClassSource>> 类型参数 = 类型.getTypeArguments();
+      //List<Type<JavaClassSource>> 类型参数 = 类型.getTypeArguments();
       // TODO: 单元测试 -
     //类型.isArray()
       //类型.isParameterized()
-      for(Type<JavaClassSource> 某参数 : 类型参数) {
+      /*for(Type<JavaClassSource> 某参数 : 类型参数) {
         System.out.println(某参数.getName());
         
-      }
+      }*/
       
       /*
       if (类型 instanceof ParameterizedType) {
@@ -96,6 +98,10 @@ public class 翻译Java代码 {
       // 构造方法已随类型名重命名, 且无返回类型
       if (!某方法.isConstructor()) {
         String 方法名 = 某方法.getName();
+
+        if (已翻译属性方法.contains(方法名)) {
+          continue;
+        }
         try {
           String 翻译方法名 = 查词(方法名);
           System.out.println("方法名: " + 方法名 + " -> " + 翻译方法名);
@@ -103,12 +109,13 @@ public class 翻译Java代码 {
         } catch (IllegalArgumentException e) {
           System.out.println("不合法方法名: " + 方法名);
         }
-        
         // TODO: get方法已随属性名改变了返回类型, 如Integer getId()
-        Type<JavaClassSource> 方法类型 = 某方法.getReturnType();
-        某方法.setReturnType(翻译类型(方法类型));
+        if (!某方法.isReturnTypeVoid()) {
+          Type<JavaClassSource> 方法类型 = 某方法.getReturnType();
+          某方法.setReturnType(翻译类型(方法类型));
+        }
 
-        System.out.println(方法类型.getName() + " 数组维度: " + 方法类型.getArrayDimensions() + " type arg:" + 方法类型.getTypeArguments());
+        //System.out.println(方法类型.getName() + " 数组维度: " + 方法类型.getArrayDimensions() + " type arg:" + 方法类型.getTypeArguments());
       }
 
     }
@@ -119,7 +126,7 @@ public class 翻译Java代码 {
     String 提取数组类型 = 返回类型;
     if (!关键词字典.containsKey(返回类型)) {
       int 数组维度 = 类型.getArrayDimensions();
-      提取数组类型 = 提取数组类型.replaceAll("\\[\\]", "");
+      提取数组类型 = 提取数组类型.substring(0, 提取数组类型.length() - 2 * 数组维度 );
       提取数组类型 = 查词(提取数组类型);
       for (int i = 0; i < 数组维度; i++) {
         提取数组类型 += "[]";
@@ -136,7 +143,6 @@ public class 翻译Java代码 {
     }
   }
 
-  // TODO: 添加字典缓存
   private static String 查词(String 英文) {
     if (内置字典.containsKey(英文)) {
       return 内置字典.get(英文);
