@@ -167,7 +167,14 @@ public class 翻译Java代码Test {
 
     assertEquals("void", 方法.getReturnType().getName());
   }
-  
+
+  @Test
+  public void 语法错误代码() throws Exception {
+    String 源码 = "{}";
+    String 错误信息 = "Could not find type declaration in Java source - is this actually code?";
+    assertEquals(错误信息, 翻译Java代码.翻译源码结构(源码));
+  }
+
   @Test
   public void 翻译测试代码() throws Exception {
     String 翻译后代码 = "package com.company.example;\n" +

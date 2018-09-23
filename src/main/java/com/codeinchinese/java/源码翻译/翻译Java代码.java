@@ -33,9 +33,9 @@ public class 翻译Java代码 {
   }
   
   public static String 翻译源码结构(String 源码) {
-    JavaClassSource 类结构 = 取类结构(源码);
+    JavaClassSource 类结构;
     try {
-      类结构 = Roaster.parse(JavaClassSource.class, 源码);
+      类结构 = 取类结构(源码);
     } catch (ParserException e) {
       return e.getLocalizedMessage();
     }
