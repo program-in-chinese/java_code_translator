@@ -1,8 +1,10 @@
 package com.codeinchinese.java.源码翻译;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.codeinchinese.功用.词典.词典常量;
 import com.codeinchinese.英汉词典.词条;
@@ -12,8 +14,8 @@ public class 释义处理 {
   static final String 词性_计算机 = "[计]";
 
   // "uid","abbr. 用户名（User Identifier）；用户界面设计（User Interface Design）"
-  public static Map<String, List<String>> 分词性(词条 某词条) {
-    Map<String, List<String>> 词性到释义 = new HashMap<>();
+  public static LinkedHashMap<String, List<String>> 分词性(词条 某词条) {
+    LinkedHashMap<String, List<String>> 词性到释义 = new LinkedHashMap<>();
     for (String 释义 : 某词条.中文释义) {
       String 除去词性 = 释义;
       String 当前词性 = "";
@@ -26,11 +28,9 @@ public class 释义处理 {
       }
       // 按分号分隔词义
       String[] 词义 = 除去词性.split("；");
+      List<String> 此词性的释义 = new ArrayList<>();
       for (String 某词义 : 词义) {
-        //String[] 分段 = 某词义.split(" ");
-        //for (String 某分段 : 分段) {
-          此词性的释义.add(某词义);
-        //}
+        此词性的释义.add(某词义);
       }
       词性到释义.put(当前词性, 此词性的释义);
     }
@@ -53,13 +53,9 @@ public class 释义处理 {
       首选词义 = 词性到释义.get(词性_计算机).get(0);
     } else {
       // 第一批的首个
-      String 首批词义 = 中文词义.get(0);
-      String[] 分段 = 首批词义.split(" ");
-      if (分段.length == 1) {
-        首选词义 = 分段[0];
-      } else {
-        首选词义 = 分段[1];
-      }
+      Entry<String, List<String>> 首个词性含义 = 词性到释义.entrySet().iterator().next();
+      List<String> 首批词义 = 首个词性含义.getValue();
+      首选词义 = 首批词义.get(0);
     }
 
     // TODO: 确保它是中文词语(不包含任何特殊字符, 语义正确等等?)

@@ -19,6 +19,7 @@ public class 翻译示例代码Test {
         "    private static final long serialVersionUID = 1L;\n" +
         "    private final 整数 识别;\n" +
         "    private 字符串 完整名称;\n" +
+        "    private 字符串[] 拜访国家;\n" +
         "\n" +
         "    public 整数 get识别() {\n" +
         "        return 识别;\n" +

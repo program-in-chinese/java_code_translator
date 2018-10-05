@@ -7,6 +7,7 @@ public class Person implements Serializable {
     private static final long serialVersionUID = 1L;
     private final Integer id;
     private String fullName;
+    private String[] visitedCountries;
 
     public Integer getId() {
         return id;

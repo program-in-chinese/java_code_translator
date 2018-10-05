@@ -23,7 +23,7 @@ public class 命名翻译Test {
   @Test
   public void 首选释义_术语词典() {
     assertEquals("个例", 命名翻译.首选释义("instance"));
-//    assertEquals("用户名", 命名翻译.首选释义("UID"));
+    assertEquals("用户名", 命名翻译.首选释义("UID"));
 
     // 大写
     assertEquals("个例", 命名翻译.首选释义("Instance"));
@@ -33,7 +33,9 @@ public class 命名翻译Test {
   public void 翻译命名() {
     assertEquals("我的类别", 命名翻译.翻译命名("MyClass"));
     assertEquals("拜访国家", 命名翻译.翻译命名("visitedCountries"));
-//    assertEquals("串行版本UID", 命名翻译.翻译命名("serialVersionUID"));
+
+    // TODO: 应置于术语词典
+    assertEquals("连续的版本用户名", 命名翻译.翻译命名("serialVersionUID"));
 
     // 不需翻译字段
     assertEquals("for类别", 命名翻译.翻译命名("forClass"));

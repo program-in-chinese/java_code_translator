@@ -33,8 +33,6 @@ public class 释义处理Test {
   public void 首选() {
     词条 词 = new 词条();
     词.中文释义 = Arrays.asList("abbr. 用户名（User Identifier）；用户界面设计（User Interface Design）");
-    
-    // TODO: 修正首选词义
-    assertEquals("用户名（User", 释义处理.首选("UID", 词));
+    assertEquals("用户名", 释义处理.首选("UID", 词));
   }
 }
