@@ -6,8 +6,6 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
-import com.codeinchinese.java.源码翻译.命名处理;
-
 public class 命名处理Test {
 
   @Test
@@ -21,6 +19,8 @@ public class 命名处理Test {
     assertEquals(Arrays.asList("My", "Product", "_", "bought"), 命名处理.拆分Java命名("MyProduct_bought"));
     assertEquals(Arrays.asList("Product", "_"), 命名处理.拆分Java命名("Product_"));
     assertEquals(Arrays.asList("_", "Product"), 命名处理.拆分Java命名("_Product"));
+    assertEquals(Arrays.asList("visited", "Countries"), 命名处理.拆分Java命名("visitedCountries"));
+    assertEquals(Arrays.asList("serial", "Version", "UID"), 命名处理.拆分Java命名("serialVersionUID"));
   }
 
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import org.jboss.forge.roaster.ParserException;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.Type;
+import org.jboss.forge.roaster.model.source.FieldSource;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
 import org.jboss.forge.roaster.model.source.PropertySource;
@@ -42,6 +43,7 @@ public class 翻译Java代码 {
 
     翻译类(类结构);
     翻译属性(类结构);
+    //翻译字段(类结构);
     翻译方法(类结构);
     
     return 类结构.toUnformattedString();
@@ -64,7 +66,7 @@ public class 翻译Java代码 {
         属性名 = 属性名.substring(0, 1).toUpperCase() + 属性名.substring(1);
       }
       try {
-        //System.out.println("属性名: " + 属性名);
+        System.out.println("属性名: " + 属性名);
         String 翻译属性名 = 查词(属性名);
         某属性.setName(翻译属性名);
         已翻译属性方法.add("get" + 翻译属性名);
@@ -89,6 +91,22 @@ public class 翻译Java代码 {
         List 类型参数 = ((ParameterizedType)类型).typeArguments();
       }*/
       某属性.setType(翻译类型(类型));
+    }
+  }
+
+  static void 翻译字段(JavaClassSource 类结构) {
+    List<FieldSource<JavaClassSource>> 字段 = 类结构.getFields();
+    for (FieldSource<JavaClassSource> 某字段 : 字段) {
+      String 字段名 = 某字段.getName();
+      try {
+        System.out.println("字段名: " + 字段名);
+        String 翻译字段名 = 查词(字段名);
+        某字段.setName(翻译字段名);
+      } catch (IllegalArgumentException e) {
+        System.out.println("不合法字段名: " + 字段名);
+      }
+      Type<JavaClassSource> 类型 = 某字段.getType();
+      某字段.setType(翻译类型(类型));
     }
   }
 

@@ -1,30 +1,38 @@
 package com.codeinchinese.java.源码翻译;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.codeinchinese.功用.词典.词典常量;
 import com.codeinchinese.英汉词典.词条;
 
 public class 释义处理 {
 
   static final String 词性_计算机 = "[计]";
 
+  // "uid","abbr. 用户名（User Identifier）；用户界面设计（User Interface Design）"
   public static Map<String, List<String>> 分词性(词条 某词条) {
     Map<String, List<String>> 词性到释义 = new HashMap<>();
     for (String 释义 : 某词条.中文释义) {
-      String[] 分段 = 释义.split(" ");
-      if (分段.length > 0 && 分段[0].length() >= 2) {
-        String 词性 = 分段[0];
-        if (分段[0].matches("[a-z]+\\.") || 分段[0].matches("\\[.*\\]")) {
-          List<String> 此词性的释义 = new ArrayList<>();
-          for (int i = 1; i < 分段.length; i++) {
-            此词性的释义.add(分段[1]);
-          }
-          词性到释义.put(词性, 此词性的释义);
+      String 除去词性 = 释义;
+      String 当前词性 = "";
+      for (String 词性 : 词典常量.词性) {
+        if (释义.indexOf(词性) == 0) {
+          当前词性 = 词性;
+          除去词性 = 释义.substring(词性.length()).trim();
+          break;
         }
       }
+      // 按分号分隔词义
+      String[] 词义 = 除去词性.split("；");
+      for (String 某词义 : 词义) {
+        //String[] 分段 = 某词义.split(" ");
+        //for (String 某分段 : 分段) {
+          此词性的释义.add(某词义);
+        //}
+      }
+      词性到释义.put(当前词性, 此词性的释义);
     }
     return 词性到释义;
   }
@@ -66,6 +74,7 @@ public class 释义处理 {
   }
 
   // TODO: 提取非外部词典部分, 测试太耗时; 或者缩减英汉词典为测试专用
+  // TODO: 清除方括号内容. "凭本身的资格[权利]"
   static String 消除括号内容(String 中文释义) {
     String 清理后 = 消除括号内容(中文释义, "（", "）");
     清理后 = 消除括号内容(清理后, "(", ")");

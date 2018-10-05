@@ -4,13 +4,12 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
+import org.jboss.forge.roaster.model.source.FieldSource;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
 import org.jboss.forge.roaster.model.source.PropertySource;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import com.codeinchinese.功用.文件功用;
 
 public class 翻译Java代码Test {
 
@@ -22,6 +21,8 @@ public class 翻译Java代码Test {
     翻译Java代码.内置字典.put("property1", "属性1");
     翻译Java代码.内置字典.put("PROPERTY1", "全大写属性1");
     翻译Java代码.内置字典.put("method1", "方法1");
+    翻译Java代码.内置字典.put("long", "长1");
+    翻译Java代码.内置字典.put("serialVersionUID", "串行版本UID");
   }
 
   @Test
@@ -58,6 +59,34 @@ public class 翻译Java代码Test {
 
     assertEquals("属性1", 属性.getName());
     assertEquals("属性类1", 属性.getType().getName());
+  }
+
+  @Test
+  public void 翻译静态字段() {
+    String 源码 = "public class Class1 {\n" +
+        "    private static final PropertyType1 property1;}";
+    JavaClassSource 类结构 = 翻译Java代码.取类结构(源码);
+    翻译Java代码.翻译字段(类结构);
+    List<FieldSource<JavaClassSource>> 属性列表 = 类结构.getFields();
+    assertEquals(1, 属性列表.size());
+    FieldSource<JavaClassSource> 属性 = 属性列表.get(0);
+
+    assertEquals("属性1", 属性.getName());
+    assertEquals("属性类1", 属性.getType().getName());
+  }
+
+  @Test
+  public void 翻译内置静态字段() {
+    String 源码 = "public class Class1 {\n" +
+        "    private static final long serialVersionUID = 1L;}";
+    JavaClassSource 类结构 = 翻译Java代码.取类结构(源码);
+    翻译Java代码.翻译字段(类结构);
+    List<FieldSource<JavaClassSource>> 属性列表 = 类结构.getFields();
+    assertEquals(1, 属性列表.size());
+    FieldSource<JavaClassSource> 属性 = 属性列表.get(0);
+
+    assertEquals("串行版本UID", 属性.getName());
+    assertEquals("长1", 属性.getType().getName());
   }
 
   @Test
@@ -173,45 +202,5 @@ public class 翻译Java代码Test {
     String 源码 = "{}";
     String 错误信息 = "Could not find type declaration in Java source - is this actually code?";
     assertEquals(错误信息, 翻译Java代码.翻译源码结构(源码));
-  }
-
-  @Test
-  public void 翻译测试代码() throws Exception {
-    String 翻译后代码 = "package com.company.example;\n" +
-        "\n" +
-        "import java.io.Serializable;\n" +
-        "\n" +
-        "public class 人 implements Serializable {\n" +
-        "\n" +
-        "    private static final long serialVersionUID = 1L;\n" +
-        "    private final 整数 识别;\n" +
-        "    private 字符串 完整名称;\n" +
-        "\n" +
-        "    public 整数 get识别() {\n" +
-        "        return 识别;\n" +
-        "    }\n" +
-        "\n" +
-        "    public 字符串 get完整名称() {\n" +
-        "        return 完整名称;\n" +
-        "    }\n" +
-        "\n" +
-        "    public void set完整名称(字符串 完整名称) {\n" +
-        "        this.完整名称 = 完整名称;\n" +
-        "    }\n" +
-        "\n" +
-        "    public 人(java.lang.Integer id) {\n" +
-        "        this.id = id;\n" +
-        "    }\n" +
-        "    \n" +
-        "    private 人[] get所有的孩子() {\n" +
-        "      return null;\n" +
-        "    }\n" +
-        "    \n" +
-        "    private 列表 get一些孩子() {\n" +
-        "      return null;\n" +
-        "    }\n" +
-        "}\n";
-    String 源码 = 文件功用.取源文件文本("测试.java");
-    assertEquals(翻译后代码, 翻译Java代码.翻译源码结构(源码));
   }
 }
