@@ -43,7 +43,7 @@ public class 翻译Java代码 {
 
     翻译类(类结构);
     翻译属性(类结构);
-    //翻译字段(类结构);
+    翻译字段(类结构);
     翻译方法(类结构);
     
     return 类结构.toUnformattedString();

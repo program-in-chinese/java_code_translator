@@ -16,7 +16,7 @@ public class 翻译示例代码Test {
         "\n" +
         "public class 人 implements Serializable {\n" +
         "\n" +
-        "    private static final long serialVersionUID = 1L;\n" +
+        "    private static final 长1 串行版本UID = 1L;\n" +
         "    private final 整数 识别;\n" +
         "    private 字符串 完整名称;\n" +
         "    private 字符串[] 拜访国家;\n" +
