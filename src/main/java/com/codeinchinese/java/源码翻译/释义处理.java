@@ -27,7 +27,7 @@ public class 释义处理 {
         }
       }
       // 按分号分隔词义
-      String[] 词义 = 除去词性.split("；");
+      String[] 词义 = 除去词性.split("；|;");
       List<String> 此词性的释义 = new ArrayList<>();
       for (String 某词义 : 词义) {
         此词性的释义.add(某词义);

@@ -33,6 +33,7 @@ public class 命名翻译Test {
   public void 翻译命名() {
     assertEquals("我的类别", 命名翻译.翻译命名("MyClass"));
     assertEquals("拜访国家", 命名翻译.翻译命名("visitedCountries"));
+    assertEquals("快速的排序", 命名翻译.翻译命名("FastSort"));
 
     // TODO: 应置于术语词典
     assertEquals("连续的版本用户名", 命名翻译.翻译命名("serialVersionUID"));

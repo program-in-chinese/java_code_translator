@@ -10,7 +10,7 @@ public class 翻译示例代码Test {
 
   @Test
   public void 翻译测试代码() throws Exception {
-    String 翻译后代码 = "package com.company.example;\n" +
+    String 目标代码 = "package com.company.example;\n" +
         "\n" +
         "import java.io.Serializable;\n" +
         "\n" +
@@ -46,7 +46,9 @@ public class 翻译示例代码Test {
         "    }\n" +
         "}\n";
     String 源码 = 文件功用.取源文件文本("测试.java");
-    assertEquals(翻译后代码, 翻译Java代码.翻译源码结构(源码));
+    String 翻译代码 = 翻译Java代码.翻译源码结构(源码);
+    // System.out.println(翻译代码);
+    assertEquals(目标代码, 翻译代码);
   }
 
 }
