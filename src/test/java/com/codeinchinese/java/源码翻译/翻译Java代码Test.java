@@ -165,6 +165,21 @@ public class 翻译Java代码Test {
   }
 
   @Test
+  public void 翻译术语方法() {
+    String 源码 = "public class Class1 {\n"
+        + "    public static void main() {\n"
+        + "        return;\n"
+        + "    }\n"
+        + "}";
+    JavaClassSource 类结构 = 翻译Java代码.取类结构(源码);
+    翻译Java代码.翻译方法(类结构);
+    List<MethodSource<JavaClassSource>> 方法列表 = 类结构.getMethods();
+    assertEquals(1, 方法列表.size());
+    MethodSource<JavaClassSource> 方法 = 方法列表.get(0);
+    assertEquals("主入口", 方法.getName());
+  }
+
+  @Test
   public void 翻译数组返回类型方法() {
     String 源码 = "public class Class1 {\n"
         + "    public MethodType1[] method1() {\n"

@@ -21,6 +21,7 @@ public class 命名翻译 {
     术语词典.put("has", "具有");
     术语词典.put("instance", "个例");
     术语词典.put("env", "环境");
+    术语词典.put("main", "主入口");
   }
   static final Map<String, String> 已查词典 = new HashMap<>();
 
