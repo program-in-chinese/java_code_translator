@@ -7,22 +7,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.codeinchinese.功用.词典.词典常量;
 import com.codeinchinese.英汉词典.英汉词典;
 import com.codeinchinese.英汉词典.词条;
 
 public class 命名翻译 {
 
   private static final Set<String> 不需翻译的词汇 = new HashSet<>(Arrays.asList("to", "for", "of"));
-  private static final Map<String, String> 术语词典 = new HashMap<>();
-  static {
-    术语词典.put("is", "为");
-    术语词典.put("get", "获取");
-    术语词典.put("set", "设置");
-    术语词典.put("has", "具有");
-    术语词典.put("instance", "个例");
-    术语词典.put("env", "环境");
-    术语词典.put("main", "主入口");
-  }
+
   static final Map<String, String> 已查词典 = new HashMap<>();
 
   public static String 翻译命名(String 英文命名) {
@@ -51,12 +43,12 @@ public class 命名翻译 {
     }
 
     // 优先根据內建词典查词
-    if (术语词典.containsKey(英文)) {
-      return 术语词典.get(英文);
+    if (词典常量.术语词典.containsKey(英文)) {
+      return 词典常量.术语词典.get(英文);
     } else {
       String 小写 = 英文.toLowerCase();
-      if (术语词典.containsKey(小写)) {
-        return 术语词典.get(小写);
+      if (词典常量.术语词典.containsKey(小写)) {
+        return 词典常量.术语词典.get(小写);
       }
     }
     // 无视所有单字符的字段, 由于歧义太大

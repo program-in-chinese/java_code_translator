@@ -3,8 +3,10 @@ package com.codeinchinese.功用.词典;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 public class 词典常量 {
   public static final List<String> 词性 = Arrays.asList(
@@ -263,7 +265,22 @@ public class 词典常量 {
       "vi.",
       "vt."
       );
-  
+  public static final Map<String, String> 术语词典 = new HashMap<>();
+  static {
+    术语词典.put("is", "为");
+    术语词典.put("get", "获取");
+    术语词典.put("set", "设置");
+    术语词典.put("has", "具有");
+    术语词典.put("instance", "个例");
+    术语词典.put("env", "环境");
+    术语词典.put("main", "主入口");
+  }
+
+  public static final HashMap<String, String> 关键词字典 = new HashMap<>();
+  static {
+    关键词字典.put("void", "void");
+  }
+
   public static void main(String[] 参数) {
     HashSet<String> 词性集合 = new HashSet<>(词性);
     List<String> 词性表 = new ArrayList<>();

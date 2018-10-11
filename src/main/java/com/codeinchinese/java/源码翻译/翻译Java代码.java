@@ -13,18 +13,13 @@ import org.jboss.forge.roaster.model.source.MethodSource;
 import org.jboss.forge.roaster.model.source.PropertySource;
 
 import com.codeinchinese.功用.文件功用;
+import com.codeinchinese.功用.词典.词典常量;
 
 public class 翻译Java代码 {
 
   private static final HashSet<String> 已翻译属性方法 = new HashSet<>();
   // 仅为测试用, 避免载入全部词汇, 也不需拆分命名
   static final HashMap<String, String> 内置字典 = new HashMap<>();
-
-  static final HashMap<String, String> 关键词字典 = new HashMap<>();
-
-  static {
-    关键词字典.put("void", "void");
-  }
 
   public static void main(String[] 参数) throws Exception {
     String 源码 = 文件功用.取源文件文本("测试.java");
@@ -142,7 +137,7 @@ public class 翻译Java代码 {
   static String 翻译类型(Type<JavaClassSource> 类型) {
     String 返回类型 = 类型.getName();
     String 提取数组类型 = 返回类型;
-    if (!关键词字典.containsKey(返回类型)) {
+    if (!词典常量.关键词字典.containsKey(返回类型)) {
       int 数组维度 = 类型.getArrayDimensions();
       提取数组类型 = 提取数组类型.substring(0, 提取数组类型.length() - 2 * 数组维度 );
       提取数组类型 = 查词(提取数组类型);
